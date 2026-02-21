@@ -42,7 +42,9 @@ export function registerSceneConfigInjection() {
       </fieldset>
     `);
 
-    html.find("button[type='submit']").before(block);
+    const basicTab = html.find('.tab[data-tab="basic"]');
+    if (basicTab.length) basicTab.append(block);
+    else html.find("form").append(block);
 
     block.find(`select[name="flags.${MODULE_ID}.regionId"]`).val(currentRegion);
     block.find(`select[name="flags.${MODULE_ID}.terrain"]`).val(currentTerrain);

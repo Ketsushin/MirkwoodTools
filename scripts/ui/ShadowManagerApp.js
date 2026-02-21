@@ -6,7 +6,7 @@ export class ShadowManagerApp extends FormApplication {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: "mirkwood-shadow-manager",
       title: l("MIRKWOOD.Shadow.Title"),
-      template: `modules/${MODULE_ID}/templates/shadow-manager.hbs`,
+      template: `${game.modules.get(MODULE_ID).path}/templates/shadow-manager.hbs`,
       width: 520,
       height: "auto",
       closeOnSubmit: false

@@ -1,4 +1,4 @@
-export const MODULE_ID = "mirkwood-tools-dev";
+export const MODULE_ID = "mirkwood-tools";
 
 export function registerSettings() {
   game.settings.register(MODULE_ID, "regions", {

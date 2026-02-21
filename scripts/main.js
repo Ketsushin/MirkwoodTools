@@ -3,19 +3,19 @@ import { setupApi } from "./api.js";
 import { registerSceneConfigInjection } from "./scene-config.js";
 import { registerShadowControls } from "./shadow.js";
 import { registerJourneyControls } from "./journey.js";
+import { registerTravelTimeControls } from "./travel-time-controls.js";
 
-// Optional: simple Handlebars helper for templates
 Hooks.once("init", () => {
   registerSettings();
   registerSceneConfigInjection();
 
-  if (!Handlebars.helpers.eq) {
-    Handlebars.registerHelper("eq", (a, b) => a === b);
-  }
+  const helpers = Handlebars.helpers ?? {};
+  if (!helpers.eq) Handlebars.registerHelper("eq", (a, b) => a === b);
 });
 
 Hooks.once("ready", () => {
   setupApi();
   registerShadowControls();
   registerJourneyControls();
+  registerTravelTimeControls();
 });

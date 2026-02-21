@@ -13,7 +13,6 @@ export class JourneyApp extends FormApplication {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: "mirkwood-journey",
       title: l("MIRKWOOD.Journey.Title"),
-      // Forge-sicher, unabhängig davon wie der Ordner heißt
       template: `${game.modules.get(MODULE_ID).path}/templates/journey.hbs`,
       width: 560,
       height: "auto",
@@ -31,16 +30,9 @@ export class JourneyApp extends FormApplication {
       .map(a => ({ id: a.id, name: a.name }));
 
     const scenes = game.scenes.contents.map(s => ({ id: s.id, name: s.name }));
-
     const roles = ROLES.map(r => ({ id: r.id, label: l(r.key) }));
 
-    return {
-      roles,
-      actors,
-      scenes,
-      pace,
-      dcInfo
-    };
+    return { roles, actors, scenes, pace, dcInfo };
   }
 
   activateListeners(html) {
@@ -72,9 +64,9 @@ export class JourneyApp extends FormApplication {
     const dc = dcInfo.total;
 
     const party = partyIds.map(id => game.actors.get(id)).filter(Boolean);
-
     if (!party.length) {
-      return ui.notifications.warn(l("MIRKWOOD.Notifications.NoPartySelected"));
+      ui.notifications.warn(l("MIRKWOOD.Notifications.NoPartySelected"));
+      return;
     }
 
     const results = [];
@@ -91,7 +83,6 @@ export class JourneyApp extends FormApplication {
       const roll = await (new Roll("1d20")).evaluate({ async: true });
       const total = roll.total;
       const success = total >= dc;
-
       results.push({ role: roleLabel, actor: actor.name, roll: total, success });
     }
 
@@ -99,8 +90,8 @@ export class JourneyApp extends FormApplication {
     const failures = results.length - successes;
 
     const regionId = api.getRegionIdForScene(scene);
-
     let consequenceText = l("MIRKWOOD.Journey.Chat.ConsequenceNone");
+
     if (regionId && failures >= 2) {
       await api.modifyDarkness(regionId, +1, "Reise misslingt / Unheil verdichtet sich");
       consequenceText = t("MIRKWOOD.Journey.Chat.ConsequenceUp", { region: regionId });

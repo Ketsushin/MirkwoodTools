@@ -3,7 +3,6 @@ import { t, l } from "./i18n.js";
 
 export function setupApi() {
   const api = {
-    // Regions
     getRegions: () => foundry.utils.deepClone(game.settings.get(MODULE_ID, "regions")),
     setRegions: (regions) => game.settings.set(MODULE_ID, "regions", regions),
 
@@ -38,7 +37,6 @@ export function setupApi() {
       });
     },
 
-    // Scene linkage
     getRegionIdForScene(scene = canvas.scene) {
       return scene?.getFlag(MODULE_ID, "regionId") ?? null;
     },
@@ -58,11 +56,7 @@ export function setupApi() {
       const base = terrainTable[terrain] ?? 13;
 
       const darkness = this.getDarknessForScene(scene);
-
-      // Pace modifier: fast harder, slow easier
       const paceMod = pace === "fast" ? 2 : pace === "slow" ? -1 : 0;
-
-      // Darkness modifier: 0-2 +0, 3-5 +1, 6-8 +2, 9-10 +3
       const dMod = darkness <= 2 ? 0 : darkness <= 5 ? 1 : darkness <= 8 ? 2 : 3;
 
       return { base, paceMod, dMod, total: base + paceMod + dMod, terrain, darkness, pace };
