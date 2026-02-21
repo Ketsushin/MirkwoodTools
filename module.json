@@ -1,6 +1,6 @@
 {
-  "id": "mirkwood-tools",
-  "title": "Mirkwood Tools (Journey + Growing Shadow)",
+  "id": "mirkwood-tools-dev",
+  "title": "Mirkwood Tools DEV (Journey + Growing Shadow)",
   "description": "Journey Engine und regionale Bedrohungsstufen für Mittelerde.",
   "version": "0.1.3",
   "authors": [
