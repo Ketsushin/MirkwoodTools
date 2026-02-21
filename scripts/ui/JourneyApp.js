@@ -1,18 +1,20 @@
 import { MODULE_ID } from "../settings.js";
+import { t, l } from "../i18n.js";
 
 const ROLES = [
-  { id: "guide", label: "Guide" },
-  { id: "scout", label: "Scout" },
-  { id: "hunter", label: "Hunter" },
-  { id: "lookout", label: "Look-out" }
+  { id: "guide", key: "MIRKWOOD.Journey.RolesList.guide" },
+  { id: "scout", key: "MIRKWOOD.Journey.RolesList.scout" },
+  { id: "hunter", key: "MIRKWOOD.Journey.RolesList.hunter" },
+  { id: "lookout", key: "MIRKWOOD.Journey.RolesList.lookout" }
 ];
 
 export class JourneyApp extends FormApplication {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: "mirkwood-journey",
-      title: "Journey Engine",
-      template: `modules/${MODULE_ID}/templates/journey.hbs`,
+      title: l("MIRKWOOD.Journey.Title"),
+      // Forge-sicher, unabhängig davon wie der Ordner heißt
+      template: `${game.modules.get(MODULE_ID).path}/templates/journey.hbs`,
       width: 560,
       height: "auto",
       closeOnSubmit: false
@@ -30,8 +32,10 @@ export class JourneyApp extends FormApplication {
 
     const scenes = game.scenes.contents.map(s => ({ id: s.id, name: s.name }));
 
+    const roles = ROLES.map(r => ({ id: r.id, label: l(r.key) }));
+
     return {
-      roles: ROLES,
+      roles,
       actors,
       scenes,
       pace,
@@ -70,19 +74,17 @@ export class JourneyApp extends FormApplication {
     const party = partyIds.map(id => game.actors.get(id)).filter(Boolean);
 
     if (!party.length) {
-      return ui.notifications.warn("Keine Party ausgewählt.");
+      return ui.notifications.warn(l("MIRKWOOD.Notifications.NoPartySelected"));
     }
 
-    // MVP: simple d20 checks, system-agnostic
-    // Later: plug in system adapters (dnd5e skill checks, AiME travel skills, etc.)
     const results = [];
     for (const r of ROLES) {
       const actorId = roleAssignments[r.id];
       const actor = actorId ? game.actors.get(actorId) : null;
+      const roleLabel = l(`MIRKWOOD.Journey.RolesList.${r.id}`);
 
-      // If no role assigned, count as failure
       if (!actor) {
-        results.push({ role: r.label, actor: "—", roll: null, success: false, note: "nicht besetzt" });
+        results.push({ role: roleLabel, actor: "—", roll: null, success: false, note: "nicht besetzt" });
         continue;
       }
 
@@ -90,44 +92,51 @@ export class JourneyApp extends FormApplication {
       const total = roll.total;
       const success = total >= dc;
 
-      results.push({ role: r.label, actor: actor.name, roll: total, success });
+      results.push({ role: roleLabel, actor: actor.name, roll: total, success });
     }
 
     const successes = results.filter(r => r.success).length;
     const failures = results.length - successes;
 
-    // Simple consequences MVP:
-    // - If failures >= 2: +1 Darkness in region (pressure increases) OR +Shadow warning
-    // - If successes >= 3: reduce pressure (optional)
     const regionId = api.getRegionIdForScene(scene);
 
-    let consequence = "";
+    let consequenceText = l("MIRKWOOD.Journey.Chat.ConsequenceNone");
     if (regionId && failures >= 2) {
       await api.modifyDarkness(regionId, +1, "Reise misslingt / Unheil verdichtet sich");
-      consequence = `Region <code>${regionId}</code> Darkness +1`;
+      consequenceText = t("MIRKWOOD.Journey.Chat.ConsequenceUp", { region: regionId });
     } else if (regionId && successes >= 3) {
-      // gentle reward, not too strong:
       await api.modifyDarkness(regionId, -1, "Reise gelingt / Hoffnung stärkt die Gegend");
-      consequence = `Region <code>${regionId}</code> Darkness -1`;
-    } else {
-      consequence = "Keine Regionsänderung";
+      consequenceText = t("MIRKWOOD.Journey.Chat.ConsequenceDown", { region: regionId });
     }
 
-    // Chat report
     const lines = results.map(r =>
       `<tr><td>${r.role}</td><td>${r.actor}</td><td>${r.roll ?? "—"}</td><td>${r.success ? "✔" : "✘"}</td><td>${r.note ?? ""}</td></tr>`
     ).join("");
 
     ChatMessage.create({
       content: `
-        <h3>🧭 Journey Leg</h3>
-        <p><b>Scene:</b> ${scene.name} | <b>Terrain:</b> ${dcInfo.terrain} | <b>Darkness:</b> ${dcInfo.darkness} | <b>Pace:</b> ${pace}</p>
-        <p><b>DC:</b> ${dc} (Base ${dcInfo.base} + Pace ${dcInfo.paceMod} + Darkness ${dcInfo.dMod})</p>
+        <h3>🧭 ${l("MIRKWOOD.Journey.Chat.Header")}</h3>
+        <p><b>${t("MIRKWOOD.Journey.Chat.SceneLine", {
+          scene: scene.name,
+          terrain: dcInfo.terrain,
+          darkness: dcInfo.darkness,
+          pace
+        })}</b></p>
+        <p>${t("MIRKWOOD.Journey.Chat.DcLine", {
+          dc,
+          base: dcInfo.base,
+          paceMod: dcInfo.paceMod,
+          dMod: dcInfo.dMod
+        })}</p>
         <table style="width:100%">
           <thead><tr><th>Role</th><th>Actor</th><th>d20</th><th>OK</th><th>Note</th></tr></thead>
           <tbody>${lines}</tbody>
         </table>
-        <p><b>Ergebnis:</b> ${successes} Erfolg(e), ${failures} Fehlschlag(e) — ${consequence}</p>
+        <p><b>${t("MIRKWOOD.Journey.Chat.Outcome", {
+          success: successes,
+          failure: failures,
+          consequence: consequenceText
+        })}</b></p>
       `
     });
   }
