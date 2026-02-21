@@ -1,0 +1,8 @@
+.mirkwood-tools .row { display: flex; gap: 8px; align-items: center; margin: 6px 0; }
+.mirkwood-tools .row label { flex: 0 0 140px; }
+.mirkwood-tools input[type="text"], .mirkwood-tools input[type="number"], .mirkwood-tools select { flex: 1; }
+.mirkwood-tools .header-row, .mirkwood-tools .footer-row { display: flex; gap: 8px; justify-content: flex-end; }
+.mirkwood-tools .party { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.mirkwood-tools .checkbox { display: flex; gap: 8px; align-items: center; }
+.mirkwood-tools .hint { opacity: 0.85; }
+.mirkwood-tools .region-row .buttons { justify-content: flex-start; }

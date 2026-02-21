@@ -1,0 +1,57 @@
+<form class="mirkwood-tools">
+  <div class="row">
+    <label>{{localize "MIRKWOOD.Journey.Scene"}}</label>
+    <select name="scene">
+      {{#each scenes}}
+        <option value="{{this.id}}">{{this.name}}</option>
+      {{/each}}
+    </select>
+  </div>
+
+  <div class="row">
+    <label>{{localize "MIRKWOOD.Journey.Pace"}}</label>
+    <select name="pace">
+      <option value="slow" {{#if (eq ../pace "slow")}}selected{{/if}}>Langsam</option>
+      <option value="normal" {{#if (eq ../pace "normal")}}selected{{/if}}>Normal</option>
+      <option value="fast" {{#if (eq ../pace "fast")}}selected{{/if}}>Schnell</option>
+    </select>
+  </div>
+
+  <hr/>
+
+  <h3>{{localize "MIRKWOOD.Journey.Party"}}</h3>
+  <div class="party">
+    {{#each actors}}
+      <label class="checkbox">
+        <input type="checkbox" name="party" value="{{this.id}}"/> {{this.name}}
+      </label>
+    {{/each}}
+  </div>
+
+  <hr/>
+
+  <h3>{{localize "MIRKWOOD.Journey.Roles"}}</h3>
+  {{#each roles}}
+    <div class="row">
+      <label>{{this.label}}</label>
+      <select name="role-{{this.id}}">
+        <option value="">—</option>
+        {{#each ../actors}}
+          <option value="{{this.id}}">{{this.name}}</option>
+        {{/each}}
+      </select>
+    </div>
+  {{/each}}
+
+  <hr/>
+
+  <div class="hint">
+    {{localize "MIRKWOOD.Journey.DcHint" dc=dcInfo.total base=dcInfo.base pace=dcInfo.paceMod dark=dcInfo.dMod}}
+  </div>
+
+  <div class="footer-row">
+    <button type="button" data-action="run-leg">
+      <i class="fas fa-dice-d20"></i> {{localize "MIRKWOOD.Journey.RunLeg"}}
+    </button>
+  </div>
+</form>

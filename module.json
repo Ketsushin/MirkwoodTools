@@ -1,0 +1,11 @@
+{
+  "id": "mirkwood-tools",
+  "title": "Mirkwood Tools (Journey + Growing Shadow)",
+  "description": "Journey Engine und regionale Bedrohungsstufen für Mittelerde.",
+  "version": "0.1.0",
+  "authors": [{ "name": "Ketsushin" }],
+  "compatibility": { "minimum": "12", "verified": "12" },
+  "esmodules": ["scripts/main.js"],
+  "styles": ["styles/mirkwood-tools.css"],
+  "languages": [{ "lang": "de", "name": "Deutsch", "path": "lang/de.json" }]
+}

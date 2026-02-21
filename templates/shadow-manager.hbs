@@ -1,0 +1,43 @@
+<form class="mirkwood-tools">
+  <div class="header-row">
+    <button type="button" data-action="add"><i class="fas fa-plus"></i> {{localize "MIRKWOOD.Shadow.AddRegion"}}</button>
+    <button type="button" data-action="save"><i class="fas fa-save"></i> {{localize "MIRKWOOD.Shadow.Save"}}</button>
+  </div>
+
+  <hr/>
+
+  {{#each regions}}
+  <div class="region-row" data-id="{{this.id}}">
+    <div class="row">
+      <label>ID</label>
+      <code>{{this.id}}</code>
+    </div>
+
+    <div class="row">
+      <label>Name</label>
+      <input type="text" name="name" value="{{this.name}}" />
+    </div>
+
+    <div class="row">
+      <label>Darkness</label>
+      <input type="number" name="darkness" value="{{this.darkness}}" min="0" max="{{this.cap}}" />
+      <label>Cap</label>
+      <input type="number" name="cap" value="{{this.cap}}" min="0" max="99" />
+    </div>
+
+    <div class="row">
+      <label>Grund (optional)</label>
+      <input type="text" name="reason-{{this.id}}" placeholder="{{localize "MIRKWOOD.Shadow.ReasonPlaceholder"}}" />
+    </div>
+
+    <div class="row buttons">
+      <button type="button" data-action="delta" data-region-id="{{this.id}}" data-delta="-1">-1</button>
+      <button type="button" data-action="delta" data-region-id="{{this.id}}" data-delta="+1">+1</button>
+      <button type="button" data-action="delta" data-region-id="{{this.id}}" data-delta="+3">+3</button>
+      <button type="button" data-action="delta" data-region-id="{{this.id}}" data-delta="-3">-3</button>
+    </div>
+
+    <hr/>
+  </div>
+  {{/each}}
+</form>

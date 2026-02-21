@@ -1,0 +1,68 @@
+{
+  "MIRKWOOD": {
+    "ModuleName": "Mirkwood Tools",
+
+    "Controls": {
+      "ShadowManager": "Growing Shadow: Regionen verwalten",
+      "Journey": "Journey Engine"
+    },
+
+    "Notifications": {
+      "NoPartySelected": "Keine Party ausgewählt."
+    },
+
+    "SceneConfig": {
+      "Legend": "Mirkwood Tools",
+      "RegionLabel": "Region (Growing Shadow)",
+      "RegionHint": "Diese Scene gehört zu einer Region (für Darkness Level).",
+      "TerrainLabel": "Terrain (Journey)",
+      "TerrainHint": "Terrain beeinflusst Reise-DC.",
+      "None": "— keine —",
+      "Terrain": {
+        "road": "Straße",
+        "plains": "Ebene",
+        "forest": "Wald",
+        "swamp": "Sumpf",
+        "hills": "Hügel",
+        "mountain": "Gebirge"
+      }
+    },
+
+    "Shadow": {
+      "Title": "Growing Shadow",
+      "AddRegion": "Region hinzufügen",
+      "Save": "Speichern",
+      "Saved": "Regionen gespeichert.",
+      "ReasonPlaceholder": "z.B. Ork-Überfall, Nekromantie, Sieg der Helden...",
+      "NoReason": "Kein Grund angegeben",
+      "Chat": {
+        "Changed": "Region {region}: {delta} ({reason})"
+      }
+    },
+
+    "Journey": {
+      "Title": "Journey Engine",
+      "RunLeg": "Etappe ausführen",
+      "Party": "Party",
+      "Roles": "Rollen",
+      "Pace": "Tempo",
+      "Scene": "Scene",
+      "DcHint": "Aktuelle DC-Schätzung: {dc} (Base {base} + Pace {pace} + Darkness {dark})",
+      "Chat": {
+        "Header": "Journey Etappe",
+        "SceneLine": "Scene: {scene} | Terrain: {terrain} | Darkness: {darkness} | Tempo: {pace}",
+        "DcLine": "DC: {dc} (Base {base} + Pace {paceMod} + Darkness {dMod})",
+        "Outcome": "Ergebnis: {success} Erfolg(e), {failure} Fehlschlag(e) — {consequence}",
+        "ConsequenceNone": "Keine Regionsänderung",
+        "ConsequenceUp": "Region {region} Darkness +1",
+        "ConsequenceDown": "Region {region} Darkness -1"
+      },
+      "RolesList": {
+        "guide": "Guide",
+        "scout": "Scout",
+        "hunter": "Hunter",
+        "lookout": "Look-out"
+      }
+    }
+  }
+}
